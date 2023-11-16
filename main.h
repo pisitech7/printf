@@ -1,61 +1,49 @@
-#define UNUSED(x) (void)(x)
+#ifndef MAIN_H
+#define MAIN_H
+
+#include <stdarg.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <limits.h>
+#include <stdio.h>
 #define BUFF_SIZE 1024
 
-/* FLAGS */
-#define F_MINUS 1
-#define F_PLUS 2
-#define F_ZERO 4
-#define F_HASH 8
-#define F_SPACE 16
-/* SIZES */
-#define S_LONG 2
-#define S_SHORT 1
-
 /**
- * struct fmt - Structure to hold format and function pointers
- * @fmt: The format specifier
- * @fn: Pointer to the corresponding function
+ * struct format - converter for printf
+ * @type_arg: identifier
+ * @f: pointer to a printer function.
+ *
+ * Description: struct that stores pointer to a
+ * printer function.
  */
-struct fmt
+typedef struct print
 {
-	char fmt;
-	int (*fn)(va_list, char[], int, int, int);
-};
-
-/**
- * typedef struct fmt fmt_t - Typedef for struct fmt
- * @fmt: The format specifier.
- * @fn: Pointer to the corresponding function.
- */
-typedef struct fmt fnt_t;
+	char *type_arg;
+	int (*f)(va_list, char *, unsigned int);
+} display_t;
 
 int _printf(const char *format, ...);
-int handle_print(const char *fnt, int *l,
-	va_list list, char buffer[], int flags, int width, int precision, int size);
+int *_strcpy(char *dest, char *src);
+int print_pointer(va_list val);
+int print_unsigned(va_list args);
+int print_hex_extra(unsigned long int num);
+int _strlenc(const char *s);
+int print_HEX_extra(unsigned int num);
+int print_exc_string(va_list val);
+int print_HEX(va_list val);
+int print_hex(va_list val);
+int print_oct(va_list val);
+int print_bin(va_list val);
+int print_revs(va_list args);
+int print_rot13(va_list args);
+int print_i(va_list args);
+int print_d(va_list args);
+int _strlen(char *s);
+int rev_string(char *s);
+int print_37(void);
+int print_c(va_list val);
+int print_s(va_list val);
+int _putchar(char c);
 
-/* FUNCTIONS */
-/* Functions to print chars and strings */
-int print_char(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_string(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_percent(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-
-/* Functions to print numbers */
-int print_int(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_binary(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_unsigned(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_octal(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_hexadecimal(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-int print_hexa_upper(va_list types, char buffer[],
-	int flags, int width, int precision, int size);
-
-/* Function to print non-printable characters */
-int print_non_printable(va_list types, char buffer[]);
+#endif
 
